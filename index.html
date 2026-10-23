@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0a1016">
+<meta name="description" content="ردیاب شخصی عادت‌ها با تقویم شمسی و نمودار کانتریبیوشن">
+<title>Streak — تقویم عادت‌ها</title>
+<link rel="stylesheet" href="./styles.css">
+<script type="module" src="./app.js"></script>
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar">
+    <a class="brand" href="./"><span class="brand-symbol">S<span class="brand-star">✳</span></span><span>streak<small>رهگیری پیشرفت، روز به روز</small></span></a>
+    <div class="side-caption">فضای شخصی</div>
+    <nav class="nav-list" aria-label="ناوبری اصلی">
+      <a class="nav-link active" href="#dashboard"><span>▦</span> داشبورد</a>
+      <a class="nav-link" href="#habits"><span>◈</span> عادت‌های من</a>
+      <a class="nav-link" href="#settings"><span>⚙</span> تنظیمات و داده‌ها</a>
+    </nav>
+    <div class="sidebar-bottom"><span class="online-dot"></span> داده‌ها فقط روی دستگاه شما ذخیره می‌شوند <small>نسخه ۱.۰ • بدون حساب کاربری</small></div>
+  </aside>
+  <main id="dashboard" class="main">
+    <header class="topbar"><span class="breadcrumb">فضای شخصی <span> / </span> داشبورد</span><span class="top-date" id="topDate"></span></header>
+    <div class="main-content">
+      <section class="hero"><div class="eyebrow"><span class="eyebrow-dot"></span> EVERY DAY COUNTS</div><h1>یک روز بهتر، <em>هر روز.</em></h1><p>پیشرفت‌های کوچک را ثبت کن. الگوهایت را ببین و عادت‌هایت را بساز.</p><div class="hero-actions"><button id="addHabit" class="btn btn-primary">＋ عادت جدید</button><button id="jumpToday" class="btn btn-ghost">◷ ثبت امروز</button></div><div class="hero-decoration" aria-hidden="true">✳</div></section>
+      <div class="section-line"><div><div class="overline">AT A GLANCE</div><h2>نمای کلی</h2></div><div class="year-picker"><button id="prevYear" aria-label="سال قبل">‹</button><span id="yearLabel"></span><button id="nextYear" aria-label="سال بعد">›</button></div></div>
+      <section class="stat-grid" id="stats"></section>
+      <div class="section-line habit-heading" id="habits"><div><div class="overline">YOUR HABITS</div><h2>ردیاب عادت‌ها <span id="habitCount" class="count-badge"></span></h2><p>برای ثبت یا ویرایش یک روز، روی خانه آن کلیک کن.</p></div><button class="btn btn-outline" id="addHabitSecondary">＋ عادت جدید</button></div>
+      <section id="habitsList" class="habits-list"></section>
+      <section id="settings" class="settings-panel"><div><div class="overline">DATA & PRIVACY</div><h2>داده‌ها در اختیار تو</h2><p>اطلاعات فقط در همین مرورگر ذخیره می‌شوند. برای انتقال به دستگاه دیگر، خروجی بگیر.</p></div><div class="settings-actions"><button class="btn btn-outline" id="exportData">↓ دریافت پشتیبان</button><button class="btn btn-ghost" id="importData">↑ بازیابی پشتیبان</button><input type="file" id="importFile" accept=".json,application/json" hidden></div></section>
+      <footer>STREAK <span>✳</span> با هر روز، یک قدم جلوتر.</footer>
+    </div>
+  </main>
+</div>
+<dialog id="entryDialog" class="modal"><form id="entryForm" class="dialog-content"><div class="dialog-top"><span class="modal-kicker">DAILY CHECK-IN</span><button class="icon-button" type="button" id="closeEntry" aria-label="بستن">×</button></div><h2 id="entryTitle">ثبت فعالیت</h2><p id="entryDate" class="dialog-description"></p><label for="entryValue" id="entryLabel">مقدار</label><input id="entryValue" type="number" min="0" max="1000000000" step="any" inputmode="decimal" required><p class="input-hint" id="entryHint"></p><div class="modal-actions"><button type="button" class="btn btn-ghost danger-text" id="deleteEntry">حذف ثبت</button><span class="action-spacer"></span><button type="button" class="btn btn-outline" id="cancelEntry">انصراف</button><button type="submit" class="btn btn-primary">ذخیره</button></div></form></dialog>
+<dialog id="habitDialog" class="modal"><form id="habitForm" class="dialog-content"><div class="dialog-top"><span class="modal-kicker">CUSTOM HABIT</span><button class="icon-button" type="button" id="closeHabit" aria-label="بستن">×</button></div><h2 id="habitDialogTitle">عادت جدید</h2><p class="dialog-description">چیزی که می‌خواهی بسنجی را تعریف کن.</p><div class="form-row"><div><label for="habitIcon">نماد</label><input id="habitIcon" maxlength="12" placeholder="✨"></div><div class="wide"><label for="habitTitle">نام عادت</label><input id="habitTitle" maxlength="80" placeholder="مثلاً مدیتیشن" required></div></div><label for="habitKind">نوع عادت</label><select id="habitKind"><option value="positive">مثبت — هرچه بیشتر بهتر</option><option value="negative">منفی — هرچه کمتر بهتر</option></select><div class="form-row"><div class="wide"><label for="habitUnit">واحد اندازه‌گیری</label><input id="habitUnit" maxlength="30" placeholder="دقیقه، صفحه، نخ..." required></div><div class="wide"><label for="habitTarget">هدف روزانه</label><input id="habitTarget" type="number" min="0" max="1000000000" step="any" value="10" required></div></div><p class="input-hint" id="habitKindHint">عادت مثبت با سبز و عادت منفی با قرمز نمایش داده می‌شود.</p><div class="modal-actions"><button type="button" class="btn btn-ghost danger-text" id="deleteHabit" hidden>حذف عادت</button><span class="action-spacer"></span><button type="button" class="btn btn-outline" id="cancelHabit">انصراف</button><button type="submit" class="btn btn-primary">ذخیره عادت</button></div></form></dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body></html>
