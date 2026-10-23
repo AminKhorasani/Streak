@@ -86,7 +86,7 @@ export function isGoalMet(habit, value) {
 
 export function currentStreak(habit, logs, today = new Date()) {
   let cursor = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 12);
-  if (!isGoalMet(habit, logs[dateKey(cursor)])) cursor = addDays(cursor, -1);
+  if (!Object.hasOwn(logs, dateKey(cursor))) cursor = addDays(cursor, -1);
   let streak = 0;
   while (streak < 10000 && isGoalMet(habit, logs[dateKey(cursor)])) {
     streak += 1;
